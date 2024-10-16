@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productivity</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/cal-heatmap/dist/cal-heatmap.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/cal-heatmap/dist/plugins/Tooltip.min.js"></script>
+    <script src="https://unpkg.com/cal-heatmap/dist/plugins/LegendLite.min.js"></script>
+    <script src="https://unpkg.com/cal-heatmap/dist/plugins/CalendarLabel.min.js"></script>
+     <script src="./portfolio.js" type="module"></script>
+    <link rel="stylesheet" href="https://unpkg.com/cal-heatmap/dist/cal-heatmap.css">
+    <style>
+        body {
+            font-family: monospace;
+            margin: 10px 25px;
+        }
+    </style>  
+   
+</head>
+
+<body>
+    <h3>Productivity Calendar</h3>
+    <div id="ex-ghDay"></div>
+    <div>
+        <span>Less</span>
+        <div id="ex-ghDay-legend"></div>
+        <span>More</span>
+    </div>
+    <div  id="action-panel">
+
+    </div>
+    
+    <script type="module">
+        import {  getStatus } from './portfolio.js'
+        (async() => {
+            let status = await getStatus();
+            paintHeatmap(status);
+        })();
+       function  paintHeatmap (data) {
+        var cal = new CalHeatmap();
+        cal.paint({
+                data: {
+                    source: data,
+                    type: 'json',
+                    x: 'date',
+                    y: d => d['percentage'],
+                    groupY: 'max',
+                },
+                date: {
+                    start: new Date('2024-01-01')
+                },
+                range: 12,
+                scale: {
+                    color: {
+                        type: 'threshold',
+                        range: ['#9be9a8', '#40c463', '#30a14e', '#216e39'],
+                        domain: [25, 50, 75, 100],
+                    },
+                },
+                domain: {
+                    type: 'month',
+                    gutter: 4,
+                    label: {
+                        text: 'MMM',
+                        textAlign: 'start',
+                        position: 'top'
+                    },
+                },
+                subDomain: {
+                    type: 'ghDay',
+                    radius: 2,
+                    width: 15,
+                    height: 15,
+                    gutter: 4
+                },
+                itemSelector: '#ex-ghDay',
+            },
+            [
+                [
+                    Tooltip,
+                    {
+                        text: function (date, value, dayjsDate) {
+                            return (
+                                (value ? value : '0') +
+                                '% on ' +
+                                dayjsDate.format('dddd, MMMM D, YYYY')
+                            );
+                        },
+                    },
+                ],
+                [
+                    LegendLite,
+                    {
+                        includeBlank: true,
+                        itemSelector: '#ex-ghDay-legend',
+                        radius: 2,
+                        width: 11,
+                        height: 11,
+                        gutter: 4,
+                    },
+                ],
+                [
+                    CalendarLabel,
+                    {
+                        width: 30,
+                        textAlign: 'start',
+                        text: () => dayjs.weekdaysShort().map((d, i) => (i % 2 == 0 ? '' : d)),
+                        padding: [25, 0, 0, 0],
+                    },
+                ],
+            ]
+        );
+    
+        }
+       </script>
+
+</body>
+
+</html>
