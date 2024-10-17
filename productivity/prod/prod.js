@@ -1,49 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
+import { Controller } from "../../controller.js";
+import { template  } from "./prod.template.js";
+import Mustache from 'https://cdn.jsdelivr.net/npm/mustache@4.2.0/+esm';
+import {  getStatus, getCalendarStartDate, getCurrentDateStatus, getActivities, onActivityMark } from '../../config.js';
+import ActionPanel from './action-panel/action-panel.js'
+import { getAuth, signOut  } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js'
+import { app } from '../../config.js';
+import { logout } from '../../user.js';
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productivity</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://unpkg.com/cal-heatmap/dist/cal-heatmap.min.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/cal-heatmap/dist/plugins/Tooltip.min.js"></script>
-    <script src="https://unpkg.com/cal-heatmap/dist/plugins/LegendLite.min.js"></script>
-    <script src="https://unpkg.com/cal-heatmap/dist/plugins/CalendarLabel.min.js"></script>
-    <script src="./portfolio.js" type="module"></script>
-    <link rel="stylesheet" href="https://unpkg.com/cal-heatmap/dist/cal-heatmap.css">
-    <style>
-        body {
-            font-family: monospace;
-            margin: 10px 25px;
+export default class ProController extends Controller {
+
+    getEventKey(){
+        return 'prod';
+    }
+    async getStatusAndPaintHeatMap() {
+        let status = await getStatus();
+        this.paintHeatmap(status)
+    }
+    async onActivityMark(params) {
+        let res  = await onActivityMark(params);
+        if(!res.error){
+            this.getStatusAndPaintHeatMap();
         }
-    </style>
+        return res;
+    }
 
+    async bind() {
+        this.getStatusAndPaintHeatMap();
+        document.addEventListener('heat_map_value_change', () => {
+            this.getStatusAndPaintHeatMap();
+        })
+        const actionPanel = new ActionPanel();
+        let activities = await getActivities();
+        let todayData = await getCurrentDateStatus();
 
-</head>
+        actionPanel.setActivities(activities);
+        actionPanel.setCurrentState(todayData);
+        actionPanel.enable({
+            onActivityMark: onActivityMark
+        });
 
-<body>
-    <div id="prod-container">
+        this.container.querySelector(".logout").addEventListener("click", () => {
+            const auth = getAuth(app);
+            signOut(auth).then(() => {
+                // Sign-out successful.
+                this.changeTo("login");
 
-    </div>
-    <!-- <h3>Productivity Calendar</h3>
-    <div id="ex-ghDay"></div>
-    <div>
-        <span>Less</span>
-        <div id="ex-ghDay-legend"></div>
-        <span>More</span>
-    </div>
-    <div  id="action-panel">
+            }).catch((error) => {
+                console.log(error);
+            
+            });
+              
+            
+        })
+        
 
-    </div>
-    <script type="module">
-        import {  getStatus, getCalendarStartDate } from './portfolio.js'
-        (async() => {
-            let status = await getStatus();
-            paintHeatmap(status);
-        })();
-       function  paintHeatmap (data) {
+    }
+    paintHeatmap (data) {
+        this.container.querySelector('#ex-ghDay').innerHTML = "";
         var cal = new CalHeatmap();
         cal.paint({
                 data: {
@@ -80,7 +93,7 @@
                     height: 15,
                     gutter: 4
                 },
-                itemSelector: '#ex-ghDay',
+                itemSelector: this.container.querySelector('#ex-ghDay'),
             },
             [
                 [
@@ -119,9 +132,9 @@
         );
     
         }
-       </script> -->
-
-
-</body>
-
-</html>
+    render() {
+        let templ = template();
+        let rendered = Mustache.render(templ);
+        this.container.innerHTML = rendered;
+    }
+}

@@ -1,6 +1,5 @@
 export  function add() {
     return `
-    <div>
     <form id="mark-activity">
         <h4>Mark Completed Activity</h4>
        
@@ -19,6 +18,5 @@ export  function add() {
         {{/activities}}
         <!-- <input type="submit" value="add"> -->
     </form>
-</div> 
     `;
 };

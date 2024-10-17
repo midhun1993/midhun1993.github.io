@@ -1,6 +1,6 @@
 import {
     add
-} from './productivity/add.template.js'
+} from './add.template.js'
 import Mustache from 'https://cdn.jsdelivr.net/npm/mustache@4.2.0/+esm';
 export default class ActionPanel {
     elem;
@@ -22,9 +22,9 @@ export default class ActionPanel {
         this.cs = cs
     }
 
-    enable({
-        onActivityAdd
-    }) {
+    enable(
+        {onActivityMark}
+    ) {
         let template = add();
         let activitiesChecked = []
         if (this.cs) {
@@ -46,11 +46,11 @@ export default class ActionPanel {
             activities: updatedAc,
         });
         this.elem.innerHTML = rendered;
-        this.bindAction(onActivityAdd);
+        this.bindAction(onActivityMark);
     }
-    bindAction(onActivityAdd) {
-        this.elem.querySelectorAll('form input[type="checkbox"]').forEach(item => {
-            item.addEventListener("change", (ev) => {
+    async bindAction(onActivityMark) {
+        this.elem.querySelectorAll('form input[type="checkbox"]').forEach((item) => {
+            item.addEventListener("change", async(ev) => {
                 let data = {
                     date: null,
                     activities: []
@@ -72,9 +72,11 @@ export default class ActionPanel {
                 let {
                     error,
                     message
-                } = onActivityAdd(data)
-                alert(message);
+                } = await onActivityMark(data)
+               // alert(message);
                 if (!error) {
+                    let ev = new Event("heat_map_value_change");
+                    document.dispatchEvent(ev);
                     //reset the form
                 }
             })
