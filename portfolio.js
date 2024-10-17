@@ -37,6 +37,11 @@ const app = initializeApp(firebaseConfig);
 const database = getFirestore(app);
 
 
+const getCalendarStartDate = () => {
+    let date  = new Date();
+    return new Date(date.getFullYear(), 0, 1);
+}
+
 const getDate = () => {
     return new Date();
 }
@@ -83,7 +88,7 @@ async function getCurrentDateStatus() {
 
 }
 const getStatus = async function () {
-    const q = query(collection(database, "status"), where('date', ">=", new Date('2024-01-01')));
+    const q = query(collection(database, "status"), where('date', ">=", getCalendarStartDate()));
     const docSnap = await getDocs(q);
     let dataset = [];
     docSnap.forEach(item => {
@@ -136,5 +141,6 @@ const onActivityAdd = ({
 })(window)
 
 export {
-    getStatus
+    getStatus,
+    getCalendarStartDate
 }

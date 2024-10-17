@@ -1,8 +1,8 @@
 export  function add() {
     return `
     <div>
-    <form id="add-activity">
-        <h4>Add Activity</h4>
+    <form id="mark-activity">
+        <h4>Mark Completed Activity</h4>
        
         <!-- <input name="date" type="date"/> -->
         {{#activities}}
@@ -17,7 +17,7 @@ export  function add() {
         </div>
         <br/>
         {{/activities}}
-        <input type="submit" value="add">
+        <!-- <input type="submit" value="add"> -->
     </form>
 </div> 
     `;
