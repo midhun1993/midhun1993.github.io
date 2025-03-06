@@ -16,7 +16,7 @@ Footer = '''
 
 def writeFile(writePath, data):
     data = data.replace(".md", ".html", -1)
-    Html = Head + markdown.markdown(data) + Footer
+    Html = Head + markdown.markdown(data, extensions=['fenced_code']) + Footer
     f = open(writePath, 'w')
     return f.write(Html)
    

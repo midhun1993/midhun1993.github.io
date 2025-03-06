@@ -11,45 +11,56 @@
 <li>publish.sh</li>
 </ul>
 <p>build.py</p>
-<p>```
-import markdown
-import os</p>
-<h2>markdown.markdownFromFile(input= './src/index.html', output='./docs/index.html')</h2>
-<p>SRC_PATH = "./src"
-DIST_PATH = "./docs"</p>
-<p>Head = '''</p>
-<html> <head> <meta charset="utf-8"> </head> <body>
+<pre><code>import markdown
+import os
+
+## markdown.markdownFromFile(input= './src/index.html', output='./docs/index.html')
+
+SRC_PATH = &quot;./src&quot;
+DIST_PATH = &quot;./docs&quot;
+
+Head = '''
+&lt;html&gt; &lt;head&gt; &lt;meta charset=&quot;utf-8&quot;&gt; &lt;/head&gt; &lt;body&gt;
 '''
 
 Footer = '''
-</body></html>
-<p>'''</p>
-<p>def writeFile(writePath, data):
-    data = data.replace(".html", ".html", -1)
+&lt;/body&gt;&lt;/html&gt;
+'''
+
+def writeFile(writePath, data):
+    data = data.replace(&quot;.html&quot;, &quot;.html&quot;, -1)
     Html = Head + markdown.markdown(data) + Footer
     f = open(writePath, 'w')
-    return f.write(Html)</p>
-<p>def build():
+    return f.write(Html)
+
+
+
+def build():
     for (root, dirs, file) in os.walk(SRC_PATH):
         for f in file:
            path = root + '/' + f
-           writePath =DIST_PATH + '/' + f.replace(".html", ".html") 
+           writePath =DIST_PATH + '/' + f.replace(&quot;.html&quot;, &quot;.html&quot;) 
            f = open(path, 'r')
-           writeFile(writePath, f.read())</p>
-<p>if <strong>name</strong> == "<strong>main</strong>" :
+           writeFile(writePath, f.read())
+
+if __name__ == &quot;__main__&quot; :
     try:
         build() 
     except Exception as e:
         print(e) 
-```</p>
+</code></pre>
 <p>build.sh</p>
-<p>```
-echo "Start Setup"</p>
-<p>python3 ./build.py</p>
-<p>git add .</p>
-<p>git commit -m "document updated"</p>
-<p>git push origin main</p>
-<p>echo "Done!"
-```</p>
+<pre><code>echo &quot;Start Setup&quot;
+
+python3 ./build.py
+
+git add .
+
+git commit -m &quot;document updated&quot;
+
+git push origin main
+
+echo &quot;Done!&quot;
+</code></pre>
 <p>by running the build.sh my articles get published in the github page.</p>
 </body></html>
