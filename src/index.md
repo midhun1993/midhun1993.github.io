@@ -1,3 +1,3 @@
-## Hello World
+#### List of Articles
 
-[Testing the setup](test.md)
+[My Blog Setup(06/03/2025)](my-blog-setup.md)
