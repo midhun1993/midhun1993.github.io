@@ -9,6 +9,7 @@ Welcome to the official documentation for the **Angular Plugin** — a collectio
 
 ---
 
+
 ## 📦 What’s Inside
 
 This plugin includes:
@@ -17,6 +18,17 @@ This plugin includes:
 - Utility services for state, API handling, and more
 - Style system for easy theming
 - Extensible APIs to fit complex needs
+
+---
+
+---
+
+
+## 🧩 Plugins
+
+List of plugins:
+
+- [notification(ng-mp-notification)]({{ '/angular-mp-package-docs/ng-mp-notification' | relative_url }})
 
 ---
 
@@ -31,7 +43,7 @@ This plugin includes:
 
 ## 📬 Feedback & Contributions
 
-Have suggestions or bug reports? [Open an issue](https://github.com/midhun1993/ng-mp-packages/issues) or reach out to the team.
+Have suggestions or bug reports? [Open an issue](https://github.com/your-org/your-angular-plugin/issues) or reach out to the team.
 
 ---
 
