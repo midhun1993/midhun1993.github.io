@@ -84,4 +84,18 @@ generic(headline: string, description:string, conf:NgxMpGenericConfig ): void
   notifier.addAction("cancel", "Cancel", () => console.log("Cancel"))
   notifier.fire();
 ```
+### Override styles:
 
+You can use below css variable in you `style.css` to override the styles
+
+```css
+    --ngx-mp-n-wrapper-bg-color:  rgba(0, 0, 0, 0.2);
+    --ngx-mp-n-wrapper-font-family: Arial, sans-serif;
+    --ngx-mp-n-headline-font-size:  1.25rem;
+    --ngx-mp-n-headline-font-weight: 700;
+    --ngx-mp-n-headline-font-color:  #d9534f;
+    --ngx-mp-n-content-font-size: 1rem;
+    --ngx-mp-n-content-font-color:  #555;
+    --ngx-mp-n-action-font-size: 1rem
+
+```
