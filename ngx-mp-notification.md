@@ -1,10 +1,9 @@
 ---
 layout: page
-title: ngx-mp-notification
+title: 🔔 ngx-mp-notification
 permalink: /angular-mp-package-docs/ngx-mp-notification
-hidden: true
+nav_exclude: true
 ---
-# 🔔 ngx-mp-notification
 
 A lightweight and customizable Angular notification plugin.
 
@@ -31,6 +30,8 @@ export class AppComponent {
   ){}
 }
 ```
+---
+
 ### Alert:
 
 Function signature
@@ -46,6 +47,7 @@ alert(headline: string, description:string, conf:NgxMpAlertConfig ): void
       ok: () => {}
     })
 ```
+---
 
 ### Warning:
 
@@ -63,6 +65,7 @@ alert(headline: string, description:string, conf:NgxMpWarningConfig ): void
       cancel: () => {}
     })
 ```
+---
 
 ### Generic:
 
